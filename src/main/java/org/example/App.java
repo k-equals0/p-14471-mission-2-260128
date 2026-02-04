@@ -25,18 +25,19 @@ public class App {
                 actionWrite();
             } else if (cmd.equals("목록")) {
                 actionList();
+            } else if (cmd.equals("삭제?id=1")) {
+                actionDelete();
             }
         }
     }
 
-    //App 내부에서만 동작하는 함수들이기 때문에 private으로 설정
     private void actionWrite() {
         System.out.print("명언 : ");
         String content = sc.nextLine();
         System.out.print("작가 : ");
         String author = sc.nextLine();
 
-        write(content, author);     //write 기능 분리
+        write(content, author);
         System.out.println(lastId + "번 명언이 등록되었습니다.");
     }
 
@@ -52,10 +53,10 @@ public class App {
 
     private void actionList() {
         System.out.println("번호 / 작가 / 명언\n--------------------------");
-        Quote[] foundedQuotes = findList(); //list 기능 분리, 최신순으로 정리된 명언 목록 받아옴
+        Quote[] foundedQuotes = findList();
 
         for (Quote quote : foundedQuotes) {
-            System.out.printf("%d / %s / %s\n", quote.id, quote.author, quote.content); //printf
+            System.out.printf("%d / %s / %s\n", quote.id, quote.author, quote.content);
         }
     }
 
@@ -64,9 +65,23 @@ public class App {
         int foundedQuoteIndex = -1;
 
         for (int i = lastQuoteIndex; i >= 0; i--) {
-            Quote foundedQuote = quotes[i];                     //저장소에서 최신명언부터 꺼냄
-            foundedQuotes[++foundedQuoteIndex] = foundedQuote;  //0번 인덱스부터 최신 명언 채움
+            Quote foundedQuote = quotes[i];
+            foundedQuotes[++foundedQuoteIndex] = foundedQuote;
         }
-        return foundedQuotes;   //출력만 하면 되는 상태로 돌려줌
+        return foundedQuotes;
+    }
+
+    private void actionDelete() {
+        delete();
+        System.out.println("1번 명언이 삭제되었습니다.");
+    }
+
+    private void delete() {
+        int deleteTarget = 0;   //1번 명언은 객체배열[0]에 들어있음
+
+        for (int i = deleteTarget; i < lastQuoteIndex; i++) {
+            quotes[i] = quotes[i + 1];    //타깃~마지막으로 입력된 명언까지 1칸씩 당기기
+        }
+        lastQuoteIndex--;               //다음 등록을 위해
     }
 }
