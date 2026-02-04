@@ -25,8 +25,8 @@ public class App {
                 actionWrite();
             } else if (cmd.equals("목록")) {
                 actionList();
-            } else if (cmd.equals("삭제?id=1")) {
-                actionDelete();
+            } else if (cmd.startsWith("삭제")) {
+                actionDelete(cmd);
             }
         }
     }
@@ -71,13 +71,15 @@ public class App {
         return foundedQuotes;
     }
 
-    private void actionDelete() {
-        delete();
-        System.out.println("1번 명언이 삭제되었습니다.");
+    private void actionDelete(String cmd) {         //삭제?id=3 이라면
+        String idStr = cmd.split("=")[1];   //= 기준으로 잘라 배열로 ["삭제?id", "3"]
+        int id = Integer.parseInt(idStr);           //정수 변환
+
+        delete(id);
+        System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
 
-    private void delete() {
-        int deleteTarget = 1;   //삭제하려는 명언의 id
+    private void delete(int deleteTarget) {
         int foundIndex = -1;    //삭제하려는 명언의 배열에서의 위치(인덱스)
 
         for (int i = 0; i <= lastQuoteIndex; i++) { //객체배열 돌면서 타겟 위치 찾음
