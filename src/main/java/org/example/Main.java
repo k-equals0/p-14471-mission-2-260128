@@ -26,6 +26,12 @@ public class Main {
                 System.out.println(id + "번 명언이 등록되었습니다.");
                 id++;
             }
+            else if(cmd.equals("목록")){
+                System.out.println("번호 / 작가 / 명언\n--------------------------");
+                for(int i=id-1; i>0; i--){
+                    System.out.println(id + " / " + author + " / " + quote);    //명언, 작가 저장 필요
+                }
+            }
         }
     }
 }
