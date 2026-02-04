@@ -77,11 +77,22 @@ public class App {
     }
 
     private void delete() {
-        int deleteTarget = 0;   //1번 명언은 객체배열[0]에 들어있음
+        int deleteTarget = 1;   //삭제하려는 명언의 id
+        int foundIndex = -1;    //삭제하려는 명언의 배열에서의 위치(인덱스)
 
-        for (int i = deleteTarget; i < lastQuoteIndex; i++) {
-            quotes[i] = quotes[i + 1];    //타깃~마지막으로 입력된 명언까지 1칸씩 당기기
+        for (int i = 0; i <= lastQuoteIndex; i++) { //객체배열 돌면서 타겟 위치 찾음
+            Quote foundedQuote = quotes[i];
+
+            if (deleteTarget == foundedQuote.id)    //타겟의 id와 일치하는 명언객체 찾으면
+                foundIndex = i;
         }
-        lastQuoteIndex--;               //다음 등록을 위해
+
+        if (foundIndex == -1)   //삭제할 명언 찾지 못한 경우(유효 인덱스X) 종료
+            return;
+
+        for (int i = foundIndex; i < lastQuoteIndex; i++) {
+            quotes[i] = quotes[i + 1];
+        }
+        lastQuoteIndex--;
     }
 }
