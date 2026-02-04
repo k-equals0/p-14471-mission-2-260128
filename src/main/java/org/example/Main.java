@@ -6,6 +6,7 @@ public class Main {
     static void main() {
 
         Scanner sc = new Scanner(System.in);
+        int id = 1;
 
         System.out.println("== 명언 앱 ==");
 
@@ -21,6 +22,9 @@ public class Main {
                 String quote = sc.nextLine();
                 System.out.print("작가 : ");
                 String author = sc.nextLine();
+
+                System.out.println(id + "번 명언이 등록되었습니다.");
+                id++;
             }
         }
     }
