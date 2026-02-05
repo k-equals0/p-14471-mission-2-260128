@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class App {
 
-    Scanner sc = new Scanner(System.in);    //인스턴수 변수로 꺼내기 -> 함수들이 공동으로 사용
+    Scanner sc = new Scanner(System.in);
     int lastId = 0;
 
     Quote[] quotes = new Quote[10];
@@ -71,30 +71,37 @@ public class App {
         return foundedQuotes;
     }
 
-    private void actionDelete(String cmd) {         //삭제?id=3 이라면
-        String idStr = cmd.split("=")[1];   //= 기준으로 잘라 배열로 ["삭제?id", "3"]
-        int id = Integer.parseInt(idStr);           //정수 변환
+    private void actionDelete(String cmd) {
+        String idStr = cmd.split("=")[1];
+        int id = Integer.parseInt(idStr);
 
-        delete(id);
+        boolean rst = delete(id);
+
+        if(!rst){
+            System.out.println("d번 명언은 존재하지 않습니다.".formatted(id));
+            return;
+        }
+
         System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
 
-    private void delete(int deleteTarget) {
-        int foundIndex = -1;    //삭제하려는 명언의 배열에서의 위치(인덱스)
+    private boolean delete(int deleteTarget) {
+        int foundIndex = -1;
 
-        for (int i = 0; i <= lastQuoteIndex; i++) { //객체배열 돌면서 타겟 위치 찾음
+        for (int i = 0; i <= lastQuoteIndex; i++) {
             Quote foundedQuote = quotes[i];
 
-            if (deleteTarget == foundedQuote.id)    //타겟의 id와 일치하는 명언객체 찾으면
+            if (deleteTarget == foundedQuote.id)
                 foundIndex = i;
         }
 
-        if (foundIndex == -1)   //삭제할 명언 찾지 못한 경우(유효 인덱스X) 종료
-            return;
+        if (foundIndex == -1)
+            return false;
 
         for (int i = foundIndex; i < lastQuoteIndex; i++) {
             quotes[i] = quotes[i + 1];
         }
         lastQuoteIndex--;
+        return true;
     }
 }
