@@ -88,14 +88,7 @@ public class App {
     }
 
     private boolean delete(int deleteTarget) {
-        int foundIndex = -1;
-
-        for (int i = 0; i <= lastQuoteIndex; i++) {
-            Quote foundedQuote = quotes[i];
-
-            if (deleteTarget == foundedQuote.id)
-                foundIndex = i;
-        }
+        int foundIndex = findIndexById(deleteTarget);
 
         if (foundIndex == -1)
             return false;
@@ -110,7 +103,7 @@ public class App {
     private void actionModify(String cmd) {
         String idStr = cmd.split("=")[1];
         int id = Integer.parseInt(idStr);
-        Quote quote = findById(id);     //해당 명언 객체 있는지 찾기
+        Quote quote = findById(id);
 
         if (quote == null) {
             System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
@@ -127,14 +120,23 @@ public class App {
         modify(quote, content, author);
     }
 
-    private Quote findById(int modifyTarget) {
+    private Quote findById(int id) {
+        int foundedIndex = findIndexById(id);
+
+        if (foundedIndex == -1)
+            return null;
+
+        return quotes[foundedIndex];
+    }
+
+    private int findIndexById(int id) {
         for (int i = 0; i <= lastQuoteIndex; i++) {
             Quote foundedQuote = quotes[i];
 
-            if (modifyTarget == foundedQuote.id)
-                return quotes[i];
+            if (id == foundedQuote.id)
+                return i;
         }
-        return null;
+        return -1;
     }
 
     private void modify(Quote quote, String content, String author) {
