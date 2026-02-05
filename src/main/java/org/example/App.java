@@ -27,6 +27,8 @@ public class App {
                 actionList();
             } else if (cmd.startsWith("삭제")) {
                 actionDelete(cmd);
+            } else if (cmd.startsWith("수정")) {
+                actionModify(cmd);
             }
         }
     }
@@ -71,14 +73,14 @@ public class App {
         return foundedQuotes;
     }
 
-    private void actionDelete(String cmd) {
+    private void actionDelete(String cmd) {     //삭제?id=1
         String idStr = cmd.split("=")[1];
         int id = Integer.parseInt(idStr);
 
         boolean rst = delete(id);
 
-        if(!rst){
-            System.out.println("d번 명언은 존재하지 않습니다.".formatted(id));
+        if (!rst) {
+            System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
             return;
         }
 
@@ -103,5 +105,40 @@ public class App {
         }
         lastQuoteIndex--;
         return true;
+    }
+
+    private void actionModify(String cmd) {
+        String idStr = cmd.split("=")[1];
+        int id = Integer.parseInt(idStr);
+        Quote quote = findById(id);     //해당 명언 객체 있는지 찾기
+
+        if (quote == null) {
+            System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
+            return;
+        }
+
+        System.out.print("명언(기존) : %s\n".formatted(quote.content));
+        System.out.print("명언 : ");
+        String content = sc.nextLine();
+        System.out.print("작가(기존) : %s\n".formatted(quote.author));
+        System.out.print("작가 : ");
+        String author = sc.nextLine();
+
+        modify(quote, content, author);
+    }
+
+    private Quote findById(int modifyTarget) {
+        for (int i = 0; i <= lastQuoteIndex; i++) {
+            Quote foundedQuote = quotes[i];
+
+            if (modifyTarget == foundedQuote.id)
+                return quotes[i];
+        }
+        return null;
+    }
+
+    private void modify(Quote quote, String content, String author) {
+        quote.content = content;
+        quote.author = author;
     }
 }
