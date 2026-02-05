@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class App {
 
-    Scanner sc = new Scanner(System.in);
-    int lastId = 0;
+    private Scanner sc = new Scanner(System.in);
+    private int lastId = 0;
 
-    Quote[] quotes = new Quote[10];
-    int lastQuoteIndex = -1;
+    private Quote[] quotes = new Quote[10];
+    private int lastQuoteIndex = -1;
 
     public void run() {
 
@@ -44,11 +44,7 @@ public class App {
     }
 
     private void write(String content, String author) {
-        Quote quote = new Quote();
-
-        quote.id = ++lastId;
-        quote.content = content;
-        quote.author = author;
+        Quote quote = new Quote(++lastId, content, author);
 
         quotes[++lastQuoteIndex] = quote;
     }
@@ -58,7 +54,7 @@ public class App {
         Quote[] foundedQuotes = findList();
 
         for (Quote quote : foundedQuotes) {
-            System.out.printf("%d / %s / %s\n", quote.id, quote.author, quote.content);
+            System.out.printf("%d / %s / %s\n", quote.getId(), quote.getAuthor(), quote.getContent());
         }
     }
 
@@ -110,14 +106,14 @@ public class App {
             return;
         }
 
-        System.out.print("명언(기존) : %s\n".formatted(quote.content));
+        System.out.print("명언(기존) : %s\n".formatted(quote.getContent()));
         System.out.print("명언 : ");
-        String content = sc.nextLine();
-        System.out.print("작가(기존) : %s\n".formatted(quote.author));
+        String newContent = sc.nextLine();
+        System.out.print("작가(기존) : %s\n".formatted(quote.getAuthor()));
         System.out.print("작가 : ");
-        String author = sc.nextLine();
+        String newAuthor = sc.nextLine();
 
-        modify(quote, content, author);
+        modify(quote, newContent, newAuthor);
     }
 
     private Quote findById(int id) {
@@ -133,14 +129,14 @@ public class App {
         for (int i = 0; i <= lastQuoteIndex; i++) {
             Quote foundedQuote = quotes[i];
 
-            if (id == foundedQuote.id)
+            if (id == foundedQuote.getId())
                 return i;
         }
         return -1;
     }
 
-    private void modify(Quote quote, String content, String author) {
-        quote.content = content;
-        quote.author = author;
+    private void modify(Quote quote, String newContent, String newAuthor) {
+        quote.setContent(newContent);
+        quote.setAuthor(newAuthor);
     }
 }
